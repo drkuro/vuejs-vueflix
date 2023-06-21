@@ -1,6 +1,7 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import LoginForm from './components/LoginForm.vue'
+import HelloWorld from './components/HelloWorld.vue';
+import LoginForm from './components/LoginForm.vue';
+import Vueflix from './components/Vueflix.vue';
 </script>
 
 <style>
@@ -19,6 +20,7 @@ import LoginForm from './components/LoginForm.vue'
 
   <main>
     <LoginForm />
+    <Vueflix />
   </main>
 </template>
 
