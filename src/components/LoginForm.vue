@@ -1,20 +1,18 @@
 <template>
-  <div>
-    <div v-if="!loggedIn" id="login-form">
-      <form @submit.prevent="login">
-        <h1>{{ title }}</h1>
-        <p>Remplissez ce formulaire pour vous connecter. </p>
-        <hr>
+  <div id="login-form">
+    <form @submit.prevent="login">
+      <h1>{{ title }}</h1>
+      <p>Remplissez ce formulaire pour vous connecter.</p>
+      <hr>
 
-        <label for="email"><b>Email</b></label>
-        <input type="text" placeholder="Entrez votre courriel" id="email" name="email" v-model="email" required>
+      <label for="email"><b>Email</b></label>
+      <input type="text" placeholder="Entrez votre courriel" id="email" name="email" v-model="email" required>
 
-        <label for="psw"><b>Mot de passe</b></label>
-        <input type="password" placeholder="Entrez votre mot de passe" id="psw" name="psw" v-model="password" required>
+      <label for="psw"><b>Mot de passe</b></label>
+      <input type="password" placeholder="Entrez votre mot de passe" id="psw" name="psw" v-model="password" required>
 
-        <p><button type="submit">Se connecter</button></p>
-      </form>
-    </div>
+      <p><button type="submit">Se connecter</button></p>
+    </form>
   </div>
 </template>
 
@@ -23,30 +21,21 @@ export default {
   data() {
     return {
       title: 'Authentification',
-      email: 'test@toto.com',
-      password: '',
-      loggedIn: false,
-      number: 5
-    }
+      email: '',
+      password: ''
+    };
   },
   methods: {
     login() {
       if (this.email === '' || this.password === '') {
-        this.loggedIn = false;
-        alert('Veuillez remplir tous les champs');
-        return;
+        this.$emit('login-failed');
       }
-      this.loggedIn = true;
-    },
-  }, computed: {
-    squaredNumber() { return this.number * this.number; },
-  },
-  watch: {
-    number(newValue, oldValue) { console.log(`Le nombre a été modifié : ${oldValue} -> ${newValue}`); },
-  },
-
+      this.$emit('login-success');
+    }
+  }
 }
 </script>
+
 
 <style scoped>
 /* Contenu de base */

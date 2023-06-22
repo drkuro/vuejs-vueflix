@@ -1,28 +1,31 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue';
+
 import LoginForm from './components/LoginForm.vue';
 import Vueflix from './components/Vueflix.vue';
 </script>
 
-<style>
-@import './assets/base.css';
-</style>
-
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="Bienvenu" />
-    </div>
-  </header>
-
-  <main>
-    <LoginForm />
-    <Vueflix />
-  </main>
+  <div id="app">
+    <LoginForm v-if="!loggedIn" @login-success="setLoginTrue()" />
+    <Vueflix v-if="loggedIn" />
+  </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      loggedIn: false
+    };
+  },
+  methods: {
+    setLoginTrue() {
+      this.loggedIn = true;
+    }
+  }
+}
+</script>
+
 
 <style scoped>
 header {

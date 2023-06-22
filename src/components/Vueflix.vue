@@ -1,3 +1,7 @@
+<script setup>
+import Film from './Film.vue';
+</script>
+   
 <template>
   <div>
     <form @submit.prevent="vueflix">
@@ -7,22 +11,7 @@
     </form>
     <p v-if="countFilm > 0">Nombre de resultat : {{ countFilm }}</p>
     <ul class="films" v-if="filmsEnResultat.length > 0">
-      <li v-for="film in filmsEnResultat" class="film card" :key="film.title">
-        <img class="poster" :src="film.poster" />
-        <p class="title">
-          {{ film.title }}
-          <span class="rating" v-if="film.score !== 'N/A'">{{ getRatingStars(film.score) }}</span>
-        </p>
-        <dl>
-          <dt>Release date</dt>
-          <dd>{{ film.released }}</dd>
-          <dt>Director</dt>
-          <dd>{{ film.director }}</dd>
-          <dt>Actors</dt>
-          <dd>{{ film.actors }}</dd>
-        </dl>
-        <p class="plot">{{ film.plot }}</p>
-      </li>
+      <Film v-for="film in filmsEnResultat" :key="film.title" v-bind="film" />
     </ul>
   </div>
 </template>
@@ -82,22 +71,6 @@ export default {
         }
       });
     },
-    getRatingStars(metascore) {
-      const score = parseInt(metascore);
-      if (score >= 0 && score <= 20) {
-        return '★☆☆☆☆';
-      } else if (score > 20 && score <= 40) {
-        return '★★☆☆☆';
-      } else if (score > 40 && score <= 60) {
-        return '★★★☆☆';
-      } else if (score > 60 && score <= 80) {
-        return '★★★★☆';
-      } else if (score > 80 && score <= 100) {
-        return '★★★★★';
-      } else {
-        return '';
-      }
-    }
   }
 }
 </script>
