@@ -6,30 +6,53 @@ import Vueflix from './components/Vueflix.vue';
 
 <template>
   <div id="app">
-    <LoginForm v-if="!loggedIn" @login-success="setLoginTrue()" />
-    <Vueflix v-if="loggedIn" />
+    <header>
+      <nav>
+        <ul>
+          <li>
+            Accueil
+          </li>
+          <li v-if="session.loggedIn">
+            <p>Connecté en tant que {{ session.user.username }}
+              <button @click="session.logout">Déconnexion</button>
+            </p>
+          </li>
+        </ul>
+      </nav>
+
+      <h1>Mon application</h1>
+    </header>
+    <section>
+      <LoginForm v-if="!session.loggedIn" @login-success="loggedIn = true" />
+      <Vueflix v-if="session.loggedIn" />
+    </section>
   </div>
 </template>
 
 <script>
+import { useSessionStore } from '@/store/session';
+
 export default {
-  data() {
-    return {
-      loggedIn: false
-    };
-  },
   methods: {
-    setLoginTrue() {
-      this.loggedIn = true;
+    handleLogout() {
+      const sessionStore = useSessionStore();
+      sessionStore.logout();
+      this.$router.push('/login');
+    }
+  },
+  computed: {
+    session() {
+      return useSessionStore();
     }
   }
-}
+};
 </script>
 
 
 <style scoped>
 header {
   line-height: 1.5;
+
 }
 
 .logo {
@@ -40,8 +63,25 @@ header {
 @media (min-width: 1024px) {
   header {
     display: flex;
-    place-items: center;
+    flex-direction: column;
     padding-right: calc(var(--section-gap) / 2);
+  }
+
+  header nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  header nav ul {
+    list-style: none;
+  }
+
+  header h1 {
+    margin: 20px 0;
+
   }
 
   .logo {

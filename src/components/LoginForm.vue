@@ -10,27 +10,38 @@
 
       <label for="psw"><b>Mot de passe</b></label>
       <input type="password" placeholder="Entrez votre mot de passe" id="psw" name="psw" v-model="password" required>
-
+      <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
       <p><button type="submit">Se connecter</button></p>
     </form>
   </div>
 </template>
 
 <script>
+import { useSessionStore } from '@/store/session';
 export default {
   data() {
     return {
       title: 'Authentification',
       email: '',
-      password: ''
+      password: '',
+      errorMessage: ''
     };
   },
   methods: {
     login() {
-      if (this.email === '' || this.password === '') {
-        this.$emit('login-failed');
+      if (this.email !== '' && this.password !== '') {
+        const sessionStore = useSessionStore();
+        sessionStore.login({ username: this.email, password: this.password })
+          .then(() => {
+            console.log("connexion reussi");
+          })
+          .catch((error) => {
+            console.log(error)
+            this.errorMessage = error.message;
+          });
+      } else {
+        this.errorMessage = 'Veuillez remplir vos identifiants';
       }
-      this.$emit('login-success');
     }
   }
 }
@@ -42,6 +53,11 @@ export default {
 body {
   font-family: Arial, sans-serif;
 }
+
+.error-message {
+  color: red;
+}
+
 
 #login-form {
   max-width: 300px;
